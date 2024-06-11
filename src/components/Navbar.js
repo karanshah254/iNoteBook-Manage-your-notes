@@ -2,10 +2,6 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom';
 const Navbar = () => {
     let location = useLocation();
-
-    React.useEffect(() => {
-        // console.log(location.pathname);
-    }, [location]);
     return (
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -23,6 +19,10 @@ const Navbar = () => {
                                 <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">About</Link>
                             </li>
                         </ul>
+                        <form className="d-flex">
+                            <Link className="btn btn-outline-light mx-1" to="/login" role="button">Login</Link>
+                            <Link className="btn btn-outline-light mx-1" to="/signup" role="button">Signup</Link>
+                        </form>
                     </div>
                 </div>
             </nav >
