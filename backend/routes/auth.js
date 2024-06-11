@@ -14,10 +14,12 @@ router.post('/createuser', [
     body('email', 'Enter valid email').isEmail(),
     body('password', 'Password must be strong and atleast 8 character').isLength({ min: 8 })
 ], async (req, res) => {
+    let success = false;
+
     // If there are errors then return bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ success, errors: errors.array() });
     }
 
     try {
@@ -27,6 +29,7 @@ router.post('/createuser', [
         })
         if (user) {
             return res.status(400).json({
+                success,
                 error: "User with this email already exist"
             })
         }
@@ -48,7 +51,8 @@ router.post('/createuser', [
         const authToken = jwt.sign(data, JWT_SECRET);
 
         // res.json(user);
-        res.json({ authToken });
+        success = true;
+        res.json({ success, authToken });
     } catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error");
@@ -61,6 +65,7 @@ router.post('/login', [
     body('password', 'Password cannot be empty').exists(),
 ], async (req, res) => {
     let success = false;
+
     // If there are errors then return bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
